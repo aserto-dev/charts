@@ -46,9 +46,9 @@ NOTES:
   export AUTHORIZER_POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=aserto-authorizer,app.kubernetes.io/instance=foobar8" -o jsonpath="{.items[0].metadata.name}")
 
   #http
-  kubectl --namespace default port-forward $AUTHORIZER_POD_NAME 8383:8383
+  kubectl --namespace default port-forward $AUTHORIZER_POD_NAME 8383:8383 &
   #grpc
-  kubectl --namespace default port-forward $AUTHORIZER_POD_NAME 8282:8282
+  kubectl --namespace default port-forward $AUTHORIZER_POD_NAME 8282:8282 &
 ````
 
 7. Connect to the directory by running these commands:

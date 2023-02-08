@@ -45,9 +45,9 @@ NOTES:
 ````
   export AUTHORIZER_POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=aserto-authorizer,app.kubernetes.io/instance=aserto1" -o jsonpath="{.items[0].metadata.name}")
 
-  #http
+  echo http
   kubectl --namespace default port-forward $AUTHORIZER_POD_NAME 8383:8383 &
-  #grpc
+  echo grpc
   kubectl --namespace default port-forward $AUTHORIZER_POD_NAME 8282:8282 &
 ````
 
@@ -55,9 +55,9 @@ NOTES:
 ````
   export DIRECTORY_POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=aserto-directory,app.kubernetes.io/instance=aserto1" -o jsonpath="{.items[0].metadata.name}")
 
-  #http
+  echo http
   kubectl --namespace default port-forward $DIRECTORY_POD_NAME 8080:8383 &
-  #grpc
+  echo grpc
   kubectl --namespace default port-forward $DIRECTORY_POD_NAME 8443:8282 &
 ````
 

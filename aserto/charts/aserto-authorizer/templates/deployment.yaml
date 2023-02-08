@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aserto-authorizer.fullname" . }}
+  #namespace: 'aserto-authorizer'
+  labels:
+    {{- include "aserto-authorizer.labels" . | nindent 4 }}
+spec:
+  serviceName: "aserto-authorizer"
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: aserto-authorizer
+  template:
+    metadata:
+      labels:
+        {{- include "aserto-authorizer.labels" . | nindent 8 }}
+    spec:
+      imagePullSecrets:
+        - name: aserto-registry-creds
+      containers:
+        - name: aserto-authorizer
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "50m"
+            limits:
+              memory: "2048Mi"
+              cpu: "2000m"
+          image: ghcr.io/aserto-dev/sidecar:{{ .Values.global.sidecar.version }}
+          args: ["run", "-c", "/config/config.yaml"]
+          ports:
+            - containerPort: 8383
+              name: https
+            - containerPort: 8282
+              name: https-grpc
+            - containerPort: 8585
+              name: http-metrics
+          volumeMounts:
+            - name: authorizer-config
+              mountPath: "/config"
+              readOnly: true
+      volumes:
+        - name: authorizer-config
+          secret:
+            secretName: authorizer-secret
+            items:
+              - key: config.yaml
+                path: config.yaml

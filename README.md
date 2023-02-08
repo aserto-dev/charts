@@ -23,9 +23,10 @@ export GHCR_TOKEN=$(vault kv get -field=READ_WRITE_TOKEN kv/github)
 **Note:** Configuration values are stored in aserto/values.yaml which can be edited to customize, however take care not to commit sensitive credentials to github.
 
 
-4. Deploy helm chart to minikube 
+4. Deploy helm chart to minikube (pass secrets to chart)
 ````
-$ helm install aserto1 aserto --set imagePullSecret=$IMAGE_PULL_SECRET,ghcrToken=$GHCR_TOKEN
+
+$ helm install aserto1 aserto --set global.sidecar.ghcrToken="$GHCR_TOKEN",imagePullSecret="$IMAGE_PULL_SECRET"
 NAME: aserto1
 LAST DEPLOYED: Wed Feb  8 09:36:31 2023
 NAMESPACE: default

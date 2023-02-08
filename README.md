@@ -37,8 +37,7 @@ NOTES:
 
 5. Observe pod creation with k9s
 
-<img width="1241" alt="Screenshot 2023-02-08 at 9 28 22 AM" src="https://user-images.githubusercontent.com/3091714/217565148-425cc63d-bf01-4d5d-b5dd-15649b68410f.png">
-
+<img width="1240" alt="Screenshot 2023-02-08 at 10 17 53 AM" src="https://user-images.githubusercontent.com/3091714/217571657-3f4d5e3d-6b3c-4492-b3c8-b52237df7268.png">
 
 
 6. Connect to the authorizer by running these commands:

@@ -6,7 +6,7 @@ imagePullSecret:
 
 global:
   sidecar:
-    version: 0.20.3
+    version: 0.20.4
     tenantId: 07f3e43c-a734-11ed-a7a0-002270b772a6
     policyName: policy-tenant
     policyTag: 0.0.1

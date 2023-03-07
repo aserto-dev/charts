@@ -44,22 +44,22 @@ NOTES:
 ````
   export AUTHORIZER_POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=aserto-authorizer,app.kubernetes.io/instance=aserto1" -o jsonpath="{.items[0].metadata.name}")
 
-  HTTP (localhost:8383):
-    kubectl --namespace {{ .Release.Namespace }} port-forward $AUTHORIZER_POD_NAME 8383:8383 &
+  echo "HTTP (localhost:8383):"
+  kubectl --namespace {{ .Release.Namespace }} port-forward $AUTHORIZER_POD_NAME 8383:8383 &
 
-  gRPC (localhost:8282):
-    kubectl --namespace {{ .Release.Namespace }} port-forward $AUTHORIZER_POD_NAME 8282:8282 &
+  echo "gRPC (localhost:8282):"
+  kubectl --namespace {{ .Release.Namespace }} port-forward $AUTHORIZER_POD_NAME 8282:8282 &
 ````
 
 7. Connect to the directory by running these commands:
 ````
   export DIRECTORY_POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=aserto-directory,app.kubernetes.io/instance=aserto1" -o jsonpath="{.items[0].metadata.name}")
 
-  HTTP (localhost:9393):
-    kubectl --namespace {{ .Release.Namespace }} port-forward $DIRECTORY_POD_NAME 9393:8383 &
+  echo "HTTP (localhost:9393):"
+  kubectl --namespace {{ .Release.Namespace }} port-forward $DIRECTORY_POD_NAME 9393:8383 &
 
-  gRPC (localhost:9292):
-    kubectl --namespace {{ .Release.Namespace }} port-forward $DIRECTORY_POD_NAME 9292:8282 &
+  echo "gRPC (localhost:9292):"
+  kubectl --namespace {{ .Release.Namespace }} port-forward $DIRECTORY_POD_NAME 9292:8282 &
 ````
 
 8. (temporary) Create a directory tenant via grpc

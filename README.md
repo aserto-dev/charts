@@ -62,11 +62,19 @@ NOTES:
   kubectl --namespace {{ .Release.Namespace }} port-forward $DIRECTORY_POD_NAME 9292:8282 &
 ````
 
-8. (temporary) Create a directory tenant via grpc
+8. Connect to the console by running these commands:
+````
+  export CONSOLE_POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=aserto-console,app.kubernetes.io/instance=aserto1" -o jsonpath="{.items[0].metadata.name}")
+
+  echo http
+  kubectl --namespace default port-forward $CONSOLE_POD_NAME 8080:8080 &
+````
+
+9. (temporary) Create a directory tenant via grpc
 ````
 $ grpcurl --insecure -H "authorization: basic c96fe48da0735cf77fdba50134f52c43" \
   -d '{"tenant": {"id": "07f3e43c-a734-11ed-a7a0-002270b772a6", "name": "test"}}' \
-  localhost:8443 aserto.directory.store.v2.Store.CreateTenant
+  localhost:9292 aserto.directory.store.v2.Store.CreateTenant
 
 {
   "result": {
@@ -78,7 +86,7 @@ $ grpcurl --insecure -H "authorization: basic c96fe48da0735cf77fdba50134f52c43" 
 }
 ````
 
-9. Undeploy when finished
+10.  Undeploy when finished
 ````
 $ helm uninstall aserto1
 release "aserto1" uninstalled

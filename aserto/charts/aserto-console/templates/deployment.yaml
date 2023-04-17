@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aserto-console.fullname" . }}
+  #namespace: 'aserto-console'
+  labels:
+    {{- include "aserto-console.labels" . | nindent 4 }}
+spec:
+  serviceName: "aserto-console"
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: aserto-console
+  template:
+    metadata:
+      labels:
+        {{- include "aserto-console.labels" . | nindent 8 }}
+    spec:
+      imagePullSecrets:
+        - name: aserto-registry-creds
+      containers:
+        - name: aserto-console
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "50m"
+            limits:
+              memory: "2048Mi"
+              cpu: "2000m"
+          image: ghcr.io/aserto-dev/self-hosted-console:0.0.0-20230406125702.0.g980fe328
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: AUTHORIZER_SERVICE_URL
+              value: http://localhost:8282
+            - name: AUTHORIZER_API_KEY
+              value: '1234'
+            - name: ASERTO_DIRECTORY_URL
+              value: http://localhost:9292
+            - name: DIRECTORY_API_KEY
+              value: '1234'
+            - name: DIRECTORY_TENANT_ID
+              value: '1234'
+

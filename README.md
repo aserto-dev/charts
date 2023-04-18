@@ -1,4 +1,4 @@
-# Helm chart for authorizer sidecar + directory
+# Helm chart for self-hosted console, authorizer sidecar + directory
 
 1. Install helm, minikube and start minikube
 ```

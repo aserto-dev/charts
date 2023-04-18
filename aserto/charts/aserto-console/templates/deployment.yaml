@@ -7,7 +7,6 @@ metadata:
   labels:
     {{- include "aserto-console.labels" . | nindent 4 }}
 spec:
-  serviceName: "aserto-console"
   replicas: 1
   selector:
     matchLabels:
@@ -29,18 +28,23 @@ spec:
               memory: "2048Mi"
               cpu: "2000m"
           image: ghcr.io/aserto-dev/self-hosted-console:0.0.0-20230406125702.0.g980fe328
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
           ports:
             - containerPort: 8080
               name: http
           env:
             - name: AUTHORIZER_SERVICE_URL
-              value: http://localhost:8282
+              value: {{ .Values.global.console.authorizerURL }}
             - name: AUTHORIZER_API_KEY
-              value: '1234'
+              value: {{ .Values.global.sidecar.rootKey }}
             - name: ASERTO_DIRECTORY_URL
-              value: http://localhost:9292
+              value: {{ .Values.global.console.directoryURL }}
             - name: DIRECTORY_API_KEY
-              value: '1234'
+              value: {{ .Values.global.directory.rootKey }}
             - name: DIRECTORY_TENANT_ID
-              value: '1234'
+              value: {{ .Values.global.sidecar.tenantId }}
 

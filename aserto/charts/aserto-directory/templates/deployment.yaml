@@ -29,6 +29,11 @@ spec:
               cpu: "2000m"
           image: ghcr.io/aserto-dev/directory:{{ .Values.global.directory.version }}
           args: ["--config", "/config/config.yaml", "run"]
+          readinessProbe:
+            tcpSocket:
+              port: 8383
+            initialDelaySeconds: 5
+            periodSeconds: 10
           ports:
             - containerPort: 8383
               name: https

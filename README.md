@@ -33,4 +33,5 @@ cd charts
 6. Control-C to undeploy
 ````
 ^C... Cleaning up (errors ok) ...
+release "aserto1" uninstalled
 ````

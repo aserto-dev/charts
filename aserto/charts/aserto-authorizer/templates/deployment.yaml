@@ -7,7 +7,6 @@ metadata:
   labels:
     {{- include "aserto-authorizer.labels" . | nindent 4 }}
 spec:
-  serviceName: "aserto-authorizer"
   replicas: 1
   selector:
     matchLabels:

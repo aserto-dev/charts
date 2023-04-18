@@ -13,7 +13,7 @@ git clone git@github.com:aserto-dev/charts
 cd charts
 ````
 
-3. Deploy helm chart to minikube (pass secrets to chart)
+3. Start deployment to minikube
 ````
 > ./start.sh
 ... Cleaning up (errors ok) ...
@@ -32,5 +32,5 @@ cd charts
 
 6. Control-C to undeploy
 ````
-$ helm uninstall aserto1
-release "aserto1" uninstalled
+^C... Cleaning up (errors ok) ...
+````

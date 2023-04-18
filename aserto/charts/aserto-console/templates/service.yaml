@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aserto-console
+  #namespace:  'aserto-console'
+  labels:
+    {{- include "aserto-authorizer.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: aserto-console
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080

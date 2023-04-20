@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "proxy.fullname" . }}
+  #namespace: 'proxy'
+  labels:
+    {{- include "proxy.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: proxy
+  template:
+    metadata:
+      labels:
+        {{- include "proxy.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: proxy
+          image: nginx:latest
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          ports:
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d # mount nginx-conf volumn to /etc/nginx
+              readOnly: true
+              name: localhost-conf
+      volumes:
+        - name: localhost-conf
+          configMap:
+            name: localhost-conf # place ConfigMap `nginx-conf` on /etc/nginx
+            items:
+              - key: localhost.conf
+                path: localhost.conf
+

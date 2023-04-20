@@ -5,7 +5,7 @@ metadata:
   name: aserto-console
   #namespace:  'aserto-console'
   labels:
-    {{- include "aserto-authorizer.labels" . | nindent 4 }}
+    {{- include "aserto-console.labels" . | nindent 4 }}
 spec:
   type: ClusterIP
   selector:

@@ -20,8 +20,8 @@ global:
       postgresPassword: directory
       database: directory
   console:
-    directoryURL: https://localhost:9292
-    authorizerURL: http://localhost:8282
+    directoryURL: http://localhost:8080/_directory
+    authorizerURL: http://localhost:8080/_authorizer
 
 replicaCount: 1
 

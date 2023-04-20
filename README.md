@@ -30,7 +30,12 @@ cd charts
 
 5. Access console via http://localhost:8080
 
-6. Control-C to undeploy
+6. Use the URL `http://localhost:8080/_authorizer` to connect to the authorizer.
+
+<img width="629" alt="image" src="https://user-images.githubusercontent.com/3091714/233498357-4a47d688-2d61-4d8d-b311-4a96479e5150.png">
+
+
+7. Control-C to undeploy
 ````
 ^C... Cleaning up (errors ok) ...
 release "aserto1" uninstalled

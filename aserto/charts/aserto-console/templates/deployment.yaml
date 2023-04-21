@@ -47,4 +47,17 @@ spec:
               value: {{ .Values.global.directory.rootKey }}
             - name: DIRECTORY_TENANT_ID
               value: {{ .Values.global.sidecar.tenantId }}
+            - name: STORAGE_PATH
+              value: /console/conf
+          volumeMounts:
+            - mountPath: /console/conf
+              readOnly: false
+              name: console-conf
+      volumes:
+        - name: console-conf
+          configMap:
+            name: console-config # place ConfigMap `nginx-conf` on /etc/nginx
+            items:
+              - key: authorizerInstances
+                path: authorizerInstances
 

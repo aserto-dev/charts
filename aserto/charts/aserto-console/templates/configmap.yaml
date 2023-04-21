@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: console-config
+data:
+  authorizerInstances: |
+    [{"name":"authorizer","url":"{{ .Values.global.console.authorizerURL }}","apiKey":"{{ .Values.global.sidecar.rootKey }}"}]

@@ -16,8 +16,6 @@ spec:
       labels:
         {{- include "aserto-authorizer.labels" . | nindent 8 }}
     spec:
-      imagePullSecrets:
-        - name: aserto-registry-creds
       containers:
         - name: aserto-authorizer
           resources:

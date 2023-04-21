@@ -16,8 +16,6 @@ spec:
       labels:
         {{- include "aserto-console.labels" . | nindent 8 }}
     spec:
-      imagePullSecrets:
-        - name: aserto-registry-creds
       containers:
         - name: aserto-console
           resources:

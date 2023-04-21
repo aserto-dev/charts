@@ -6,14 +6,14 @@ imagePullSecret:
 
 global:
   sidecar:
-    version: 0.20.5
+    version: latest
     tenantId: 07f3e43c-a734-11ed-a7a0-002270b772a6
     policyName: policy-tenant
     policyTag: 0.0.1
     rootKey: 997ec52a856f0911442d1fccc308a408
     ghcrToken:
   directory:
-    version: 0.0.89
+    version: latest
     rootKey: c96fe48da0735cf77fdba50134f52c43
   postgresql:
     auth:

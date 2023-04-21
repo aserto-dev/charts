@@ -25,9 +25,17 @@ spec:
             - /bin/sh
             - -c
             - |
+              go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+              go install github.com/aserto-dev/topaz/cmd/topaz@latest
+
+              echo ... Creating directory tenant ...
+              grpcurl --insecure -H "authorization: basic {{ .Values.global.directory.rootKey }}" \
+                -d '{"tenant": {"id": "{{ .Values.global.sidecar.tenantId }}", "name": "demo"}}' \
+                 aserto-directory:8282 aserto.directory.store.v2.Store.CreateTenant
+
+              echo ... Importing sample data ...
               curl https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/citadel-objects.json > /data/citadel-objects.json
               curl https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/citadel-relations.json > /data/citadel-relations.json
-              go install github.com/aserto-dev/topaz/cmd/topaz@latest
               topaz import --no-check -i -H aserto-directory:8282 -k {{ .Values.global.directory.rootKey }} --tenant-id={{ .Values.global.sidecar.tenantId }} -d /data
       restartPolicy: Never
       volumes:

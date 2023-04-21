@@ -48,9 +48,9 @@ spec:
             - name: DIRECTORY_TENANT_ID
               value: {{ .Values.global.sidecar.tenantId }}
             - name: STORAGE_PATH
-              value: /console/conf
+              value: /config
           volumeMounts:
-            - mountPath: /console/conf
+            - mountPath: /config
               readOnly: false
               name: console-conf
       volumes:

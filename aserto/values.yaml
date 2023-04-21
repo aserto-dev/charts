@@ -6,10 +6,10 @@ global:
   sidecar:
     version: latest
     tenantId: 07f3e43c-a734-11ed-a7a0-002270b772a6
-    policyName: policy-tenant
-    policyTag: 0.0.1
+    policyName: policy-todo
+    policyImage: ghcr.io/aserto-policies/policy-todo
+    policyTag: 2
     rootKey: 997ec52a856f0911442d1fccc308a408
-    ghcrToken:
   directory:
     version: latest
     rootKey: c96fe48da0735cf77fdba50134f52c43

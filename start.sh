@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-VAULT_ADDR=https://vault.eng.aserto.com
-vault login --no-print --method=github
-
-GHCR_TOKEN=$(vault kv get -field=READ_WRITE_TOKEN kv/github)
-
-
 # trap ctrl-c and call ctrl_c()
 trap cleanup INT
 
@@ -21,7 +15,7 @@ cleanup
 sleep 5
 
 echo ... Deploying helm chart ...
-helm install aserto1 aserto --set global.sidecar.ghcrToken="$GHCR_TOKEN"
+helm install aserto1 aserto
 
 echo ... Waiting for services to become ready ...
 POSTGRES_POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=postgresql,app.kubernetes.io/instance=aserto1" -o jsonpath="{.items[0].metadata.name}")
@@ -43,7 +37,6 @@ kubectl --namespace default port-forward $DIRECTORY_POD_NAME 9393:8383 &
 kubectl --namespace default port-forward $DIRECTORY_POD_NAME 9292:8282 &
 kubectl --namespace default port-forward $AUTHORIZER_POD_NAME 8383:8383 &
 kubectl --namespace default port-forward $AUTHORIZER_POD_NAME 8282:8282 &
-#kubectl --namespace default port-forward $CONSOLE_POD_NAME 8080:8080 &
 kubectl --namespace default port-forward $NGINX_POD_NAME 8080:8080 &
 
 echo

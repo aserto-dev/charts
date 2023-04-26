@@ -18,6 +18,7 @@ global:
       postgresPassword: directory
       database: directory
   console:
+    version: 0.0.0-20230426133900.0.gd8fc62f9
     directoryURL: http://localhost:8080/_directory
     authorizerURL: http://localhost:8080/_authorizer
 

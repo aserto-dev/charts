@@ -25,7 +25,7 @@ spec:
             limits:
               memory: "2048Mi"
               cpu: "2000m"
-          image: ghcr.io/aserto-dev/self-hosted-console:0.0.0-20230406125702.0.g980fe328
+          image: ghcr.io/aserto-dev/self-hosted-console:{{ .Values.global.console.version }}
           readinessProbe:
             tcpSocket:
               port: 8080

@@ -4,7 +4,7 @@
 
 global:
   sidecar:
-    version: latest
+    version: 0.20.11
     tenantId: 07f3e43c-a734-11ed-a7a0-002270b772a6
     policyName: policy-todo
     policyImage: ghcr.io/aserto-policies/policy-todo

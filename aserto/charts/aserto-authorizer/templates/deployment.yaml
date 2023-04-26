@@ -27,6 +27,11 @@ spec:
               cpu: "2000m"
           image: ghcr.io/aserto-dev/sidecar:{{ .Values.global.sidecar.version }}
           args: ["run", "-c", "/config/config.yaml"]
+          readinessProbe:
+            tcpSocket:
+              port: 8383
+            initialDelaySeconds: 5
+            periodSeconds: 10
           ports:
             - containerPort: 8383
               name: https

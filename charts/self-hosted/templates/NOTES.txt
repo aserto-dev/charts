@@ -1,27 +1,27 @@
 1. Connect to the authorizer by running these commands:
   export AUTHORIZER_POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name=aserto-authorizer,app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
 
-  HTTP (localhost:8383):
-    kubectl --namespace {{ .Release.Namespace }} port-forward $AUTHORIZER_POD_NAME 8383:8383 &
+  #HTTP (localhost:8383):
+  kubectl --namespace {{ .Release.Namespace }} port-forward $AUTHORIZER_POD_NAME 8383:8383 &
 
-  gRPC (localhost:8282):
-    kubectl --namespace {{ .Release.Namespace }} port-forward $AUTHORIZER_POD_NAME 8282:8282 &
+  #gRPC (localhost:8282):
+  kubectl --namespace {{ .Release.Namespace }} port-forward $AUTHORIZER_POD_NAME 8282:8282 &
 
 
 2. Connect to the directory by running these commands:
   export DIRECTORY_POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name=aserto-directory,app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
 
-  HTTP (localhost:9393):
+  #HTTP (localhost:9393):
   kubectl --namespace {{ .Release.Namespace }} port-forward $DIRECTORY_POD_NAME 9393:8383 &
 
-  gRPC (localhost:9292):
+  #gRPC (localhost:9292):
   kubectl --namespace {{ .Release.Namespace }} port-forward $DIRECTORY_POD_NAME 9292:8282 &
 
 
 3. Connect to the console by running these commands:
-  export CONSOLE_POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name=aserto-console,app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  export CONSOLE_POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name=console-proxy,app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
 
-  echo http
+  #HTTP (localhost:8080):
   kubectl --namespace {{ .Release.Namespace }} port-forward $CONSOLE_POD_NAME 8080:8080 &
 
 

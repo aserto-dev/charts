@@ -1,0 +1,31 @@
+name: Release Charts
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "github-bot@aserto.com"
+          git config --global user.name "Aserto Bot"
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.5.0
+        with:
+          charts_dir: charts
+          charts_repo_url: https://charts.aserto.com
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

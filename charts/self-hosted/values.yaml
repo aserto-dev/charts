@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 
 global:
+
   sidecar:
     version: 0.20.12
     tenantId: 07f3e43c-a734-11ed-a7a0-002270b772a6
@@ -10,13 +11,19 @@ global:
     policyImage: ghcr.io/aserto-policies/policy-todo
     policyTag: 2
     rootKey: 997ec52a856f0911442d1fccc308a408
+
   directory:
     version: latest
     rootKey: c96fe48da0735cf77fdba50134f52c43
+
   postgresql:
+    localServerEnabled: true
     auth:
+      postgresHost: "{{ .Release.Name }}-postgresql"
+      postgresUser: postgres
       postgresPassword: directory
       database: directory
+
   console:
     version: 0.0.0-20230426133900.0.gd8fc62f9
     directoryURL: http://localhost:8080/_directory

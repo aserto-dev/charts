@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "aserto-console.fullname" . }}
-  #namespace: 'aserto-console'
   labels:
     {{- include "aserto-console.labels" . | nindent 4 }}
 spec:
@@ -11,6 +10,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: aserto-console
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
@@ -54,7 +54,7 @@ spec:
       volumes:
         - name: console-conf
           configMap:
-            name: console-config # place ConfigMap `nginx-conf` on /etc/nginx
+            name: {{ include "aserto-console.fullname" . }}-config
             items:
               - key: authorizerInstances
                 path: authorizerInstances

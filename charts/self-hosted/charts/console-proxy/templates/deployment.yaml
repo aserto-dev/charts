@@ -10,6 +10,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: console-proxy
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
@@ -27,13 +28,13 @@ spec:
             - containerPort: 8080
               name: http
           volumeMounts:
-            - mountPath: /etc/nginx/conf.d # mount nginx-conf volumn to /etc/nginx
+            - mountPath: /etc/nginx/conf.d
               readOnly: true
               name: localhost-conf
       volumes:
         - name: localhost-conf
           configMap:
-            name: localhost-conf # place ConfigMap `nginx-conf` on /etc/nginx
+            name: {{ include "console-proxy.fullname" . }}-config
             items:
               - key: localhost.conf
                 path: localhost.conf

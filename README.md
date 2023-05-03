@@ -1,6 +1,6 @@
 ## Aserto Charts for Kubernetes
 
-For more information, please refer to the charts section of Aserto documentation.
+For more information, please refer to the charts section of Aserto [documentation](http://localhost:3000/docs/getting-started/self-hosted/helm-chart).
 
 ### Usage
 

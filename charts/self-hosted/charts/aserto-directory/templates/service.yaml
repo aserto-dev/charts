@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: aserto-directory
-  #namespace: 'aserto-directory'
+  name: {{ include "aserto-directory.fullname" . }}
   labels:
     {{- include "aserto-directory.labels" . | nindent 4 }}
 spec:
   type: ClusterIP
   selector:
     app.kubernetes.io/name: aserto-directory
+    app.kubernetes.io/instance: {{ .Release.Name }}
   ports:
     - name: https-api
       port: 8383

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: localhost-conf
+  name: {{ include "console-proxy.fullname" . }}-config
 data:
   localhost.conf: |
     server {
@@ -9,15 +9,15 @@ data:
         server_name localhost;
 
         location /_authorizer/ {
-          proxy_pass https://aserto-authorizer:8383/;
+          proxy_pass https://{{ .Release.Name}}-aserto-authorizer:8383/;
         }
 
         location /_directory/ {
-          proxy_pass https://aserto-directory:8383/;
+          proxy_pass https://{{ .Release.Name}}-aserto-directory:8383/;
         }
 
         location / {
-          proxy_pass http://aserto-console:8080;
+          proxy_pass http://{{ .Release.Name}}-aserto-console:8080;
         }
 
     }

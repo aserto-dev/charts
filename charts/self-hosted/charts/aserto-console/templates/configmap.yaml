@@ -1,7 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: console-config
+  name: {{ include "aserto-console.fullname" . }}-config
+  labels:
+    {{- include "aserto-console.labels" . | nindent 4 }}
 data:
   authorizerInstances: |
     [{"name":"authorizer","url":"{{ .Values.global.console.authorizerURL }}","apiKey":"{{ .Values.global.sidecar.rootKey }}"}]

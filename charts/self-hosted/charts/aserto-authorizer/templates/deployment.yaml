@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "aserto-authorizer.fullname" . }}
-  #namespace: 'aserto-authorizer'
   labels:
     {{- include "aserto-authorizer.labels" . | nindent 4 }}
 spec:
@@ -11,6 +10,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: aserto-authorizer
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
@@ -46,7 +46,7 @@ spec:
       volumes:
         - name: authorizer-config
           secret:
-            secretName: authorizer-secret
+            secretName: {{ include "aserto-authorizer.fullname" . }}-secret
             items:
               - key: config.yaml
                 path: config.yaml

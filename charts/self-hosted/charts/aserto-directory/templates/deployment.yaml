@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "aserto-directory.fullname" . }}
-  #namespace: 'aserto-directory'
   labels:
     {{- include "aserto-directory.labels" . | nindent 4 }}
 spec:
@@ -11,6 +10,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: aserto-directory
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
@@ -46,7 +46,7 @@ spec:
       volumes:
         - name: config
           secret:
-            secretName: directory-secret
+            secretName: {{ include "aserto-directory.fullname" . }}-secret
             items:
               - key: config.yaml
                 path: config.yaml

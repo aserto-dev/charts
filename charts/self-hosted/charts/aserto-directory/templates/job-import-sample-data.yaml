@@ -3,18 +3,18 @@ kind: Job
 metadata:
   name: {{ include "aserto-directory.fullname" . }}-import-sample-data
   labels:
-    app.kubernetes.io/name: import-sample-data
+    {{- include "aserto-directory.labels" . | nindent 4 }}
 spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: import-sample-data
+        {{- include "aserto-directory.labels" . | nindent 4 }}
     spec:
       initContainers:
         - name: wait-for-directory
           image: golang:1.19
           command: [ "/bin/sh","-c" ]
-          args: [ 'while [ $(curl -ksw "%{http_code}" "https://aserto-directory:8383/" -o /dev/null) -ne 404 ]; do sleep 5; echo "Waiting for the service..."; done' ]
+          args: [ 'while [ $(curl -ksw "%{http_code}" "https://{{ include "aserto-directory.fullname" . }}:8383/" -o /dev/null) -ne 404 ]; do sleep 5; echo "Waiting for the service..."; done' ]
       containers:
         - name: import-sample-data
           image: golang:1.19
@@ -31,12 +31,12 @@ spec:
               echo ... Creating directory tenant ...
               grpcurl --insecure -H "authorization: basic {{ .Values.global.directory.rootKey }}" \
                 -d '{"tenant": {"id": "{{ .Values.global.sidecar.tenantId }}", "name": "demo"}}' \
-                 aserto-directory:8282 aserto.directory.store.v2.Store.CreateTenant
+                 {{ include "aserto-directory.fullname" . }}:8282 aserto.directory.store.v2.Store.CreateTenant
 
               echo ... Importing sample data ...
               curl https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/citadel-objects.json > /data/citadel-objects.json
               curl https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/citadel-relations.json > /data/citadel-relations.json
-              topaz import --no-check -i -H aserto-directory:8282 -k {{ .Values.global.directory.rootKey }} --tenant-id={{ .Values.global.sidecar.tenantId }} -d /data
+              topaz import --no-check -i -H {{ include "aserto-directory.fullname" . }}:8282 -k {{ .Values.global.directory.rootKey }} --tenant-id={{ .Values.global.sidecar.tenantId }} -d /data
       restartPolicy: Never
       volumes:
         - name: data

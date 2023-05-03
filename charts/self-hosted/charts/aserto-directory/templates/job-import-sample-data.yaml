@@ -6,9 +6,6 @@ metadata:
     {{- include "aserto-directory.labels" . | nindent 4 }}
 spec:
   template:
-    metadata:
-      labels:
-        {{- include "aserto-directory.labels" . | nindent 4 }}
     spec:
       initContainers:
         - name: wait-for-directory

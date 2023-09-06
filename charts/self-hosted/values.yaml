@@ -13,7 +13,7 @@ global:
     rootKey: 997ec52a856f0911442d1fccc308a408
 
   directory:
-    version: 0.1.7
+    version: 0.21.13
     rootKey: c96fe48da0735cf77fdba50134f52c43
 
   postgresql:

@@ -48,7 +48,7 @@ spec:
                 "SELECT 1 FROM pg_user WHERE usename = 'tenant_reader'" \
                 | grep -q 1 \
                 || psql -h $PGHOST -U $PGUSER $PGDATABASE \
-                -c "CREATE ROLE tenant_reader LOGIN PASSWORD '{{ .Values.global.postgresql.auth.postgresPassword }}';";
+                -c "CREATE ROLE tenant_reader LOGIN PASSWORD '$PGPASSWORD';";
 
               psql -h $PGHOST -U $PGUSER $PGDATABASE \
                 -c "GRANT ALL ON SCHEMA public TO tenant_reader;";

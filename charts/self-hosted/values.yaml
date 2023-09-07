@@ -4,12 +4,12 @@
 
 global:
 
-  sidecar:
-    version: 0.21.1
+  topaz:
+    version: 0.25.10
     tenantId: 07f3e43c-a734-11ed-a7a0-002270b772a6
     policyName: policy-todo
     policyImage: ghcr.io/aserto-policies/policy-todo
-    policyTag: 2
+    policyTag: latest
     rootKey: 997ec52a856f0911442d1fccc308a408
 
   directory:
@@ -25,7 +25,7 @@ global:
       database: directory
 
   console:
-    version: 0.0.0-20230626072039.0.g3273a228
+    version: 0.0.0-20230831100618.0.g9bf87e4c
     directoryURL: http://localhost:8080/_directory
     authorizerURL: http://localhost:8080/_authorizer
 

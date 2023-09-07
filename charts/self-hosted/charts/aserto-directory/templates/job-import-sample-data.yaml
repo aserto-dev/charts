@@ -27,13 +27,13 @@ spec:
 
               echo ... Creating directory tenant ...
               grpcurl --insecure -H "authorization: basic {{ .Values.global.directory.rootKey }}" \
-                -d '{"tenant": {"id": "{{ .Values.global.sidecar.tenantId }}", "name": "demo"}}' \
+                -d '{"tenant": {"id": "{{ .Values.global.topaz.tenantId }}", "name": "demo"}}' \
                  {{ include "aserto-directory.fullname" . }}:8282 aserto.directory.store.v2.Store.CreateTenant
 
               echo ... Importing sample data ...
               curl https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/citadel-objects.json > /data/citadel-objects.json
               curl https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/citadel-relations.json > /data/citadel-relations.json
-              topaz import --no-check -i -H {{ include "aserto-directory.fullname" . }}:8282 -k {{ .Values.global.directory.rootKey }} --tenant-id={{ .Values.global.sidecar.tenantId }} -d /data
+              topaz import --no-check -i -H {{ include "aserto-directory.fullname" . }}:8282 -k {{ .Values.global.directory.rootKey }} --tenant-id={{ .Values.global.topaz.tenantId }} -d /data
       restartPolicy: Never
       volumes:
         - name: data

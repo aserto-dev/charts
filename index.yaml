@@ -3,6 +3,21 @@ entries:
   self-hosted:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2023-09-07T17:07:22.388785435Z"
+    dependencies:
+    - condition: global.postgresql.localServerEnabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.14
+    description: A Helm chart for Self-Hosted Aserto
+    digest: 67a3f1c3b87889c8740b06cd93bb553a6851634e55eedea6c458213bd38f9d56
+    name: self-hosted
+    type: application
+    urls:
+    - https://github.com/aserto-dev/charts/releases/download/self-hosted-0.1.0/self-hosted-0.1.0.tgz
+    version: 0.1.0
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2023-07-19T14:36:23.765497674Z"
     dependencies:
     - condition: global.postgresql.localServerEnabled
@@ -89,4 +104,4 @@ entries:
     urls:
     - https://github.com/aserto-dev/charts/releases/download/self-hosted-0.0.2/self-hosted-0.0.2.tgz
     version: 0.0.2
-generated: "2023-07-19T14:36:23.765738173Z"
+generated: "2023-09-07T17:07:22.389140431Z"

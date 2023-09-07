@@ -16,6 +16,43 @@ spec:
       labels:
         {{- include "aserto-directory.labels" . | nindent 8 }}
     spec:
+      initContainers:
+        - name: init-db
+          image: bitnami/postgresql:15.1.0-debian-11-r31
+          env:
+            - name: PGHOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "aserto-directory.fullname" . }}-secret
+                  key: initPGHOST
+            - name: PGDATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "aserto-directory.fullname" . }}-secret
+                  key: initPGDATABASE
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "aserto-directory.fullname" . }}-secret
+                  key: initPGUSER
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "aserto-directory.fullname" . }}-secret
+                  key: initPGPASSWORD
+          command:
+            - sh
+            - -c
+            - |
+              psql -h $PGHOST -U $PGUSER $PGDATABASE -tc \
+                "SELECT 1 FROM pg_user WHERE usename = 'tenant_reader'" \
+                | grep -q 1 \
+                || psql -h $PGHOST -U $PGUSER $PGDATABASE \
+                -c "CREATE ROLE tenant_reader LOGIN PASSWORD '$PGPASSWORD';";
+
+              psql -h $PGHOST -U $PGUSER $PGDATABASE \
+                -c "GRANT ALL ON SCHEMA public TO tenant_reader;";
+
       containers:
         - name: aserto-directory
           resources:

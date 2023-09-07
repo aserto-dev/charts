@@ -38,13 +38,13 @@ spec:
             - name: AUTHORIZER_SERVICE_URL
               value: {{ .Values.global.console.authorizerURL }}
             - name: AUTHORIZER_API_KEY
-              value: {{ .Values.global.sidecar.rootKey }}
+              value: {{ .Values.global.topaz.rootKey }}
             - name: ASERTO_DIRECTORY_URL
               value: {{ .Values.global.console.directoryURL }}
             - name: DIRECTORY_API_KEY
               value: {{ .Values.global.directory.rootKey }}
             - name: DIRECTORY_TENANT_ID
-              value: {{ .Values.global.sidecar.tenantId }}
+              value: {{ .Values.global.topaz.tenantId }}
             - name: STORAGE_PATH
               value: /config
           volumeMounts:

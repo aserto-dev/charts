@@ -25,7 +25,7 @@ spec:
             limits:
               memory: "2048Mi"
               cpu: "2000m"
-          image: ghcr.io/aserto-dev/sidecar:{{ .Values.global.sidecar.version }}
+          image: ghcr.io/aserto-dev/topaz:{{ .Values.global.topaz.version }}
           args: ["run", "-c", "/config/config.yaml"]
           readinessProbe:
             tcpSocket:

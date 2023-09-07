@@ -6,4 +6,4 @@ metadata:
     {{- include "aserto-console.labels" . | nindent 4 }}
 data:
   authorizerInstances: |
-    [{"name":"authorizer","url":"{{ .Values.global.console.authorizerURL }}","apiKey":"{{ .Values.global.sidecar.rootKey }}"}]
+    [{"name":"authorizer","url":"{{ .Values.global.console.authorizerURL }}","apiKey":"{{ .Values.global.topaz.rootKey }}"}]

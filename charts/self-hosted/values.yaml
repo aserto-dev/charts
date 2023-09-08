@@ -5,7 +5,7 @@
 global:
 
   topaz:
-    version: 0.25.10
+    version: 0.25.11
     tenantId: 07f3e43c-a734-11ed-a7a0-002270b772a6
     policyName: policy-todo
     policyImage: ghcr.io/aserto-policies/policy-todo
@@ -25,7 +25,7 @@ global:
       database: directory
 
   console:
-    version: 0.0.0-20230831100618.0.g9bf87e4c
+    version: 0.0.0-20230908174133.0.g5e3c9980
     directoryURL: http://localhost:8080/_directory
     authorizerURL: http://localhost:8080/_authorizer
 

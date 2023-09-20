@@ -19,12 +19,12 @@ global:
   postgresql:
     localServerEnabled: true
     existingSecret: "{{ .Release.Name }}-postgresql"
+    secretKeys:
+      adminPasswordKey: postgres-password
     auth:
-      secretKeys:
-        adminPasswordKey: postgres-password
       postgresHost: "{{ .Release.Name }}-postgresql"
       postgresUser: postgres
-      postgresPassword: directory
+      postgresPassword: muahahaha
       database: directory
 
   console:

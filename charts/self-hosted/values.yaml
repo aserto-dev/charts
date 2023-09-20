@@ -24,7 +24,7 @@ global:
     auth:
       postgresHost: "{{ .Release.Name }}-postgresql"
       postgresUser: postgres
-      postgresPassword: muahahaha
+      postgresPassword: directory
       database: directory
 
   console:

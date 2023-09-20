@@ -38,8 +38,8 @@ spec:
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "aserto-directory.fullname" . }}-secret
-                  key: initPGPASSWORD
+                  name: "{{ tpl (.Values.global.postgresql.existingSecret) . }}"
+                  key: postgres-password
           command:
             - sh
             - -c
@@ -64,6 +64,17 @@ spec:
               cpu: "2000m"
           image: ghcr.io/aserto-dev/directory:{{ .Values.global.directory.version }}
           args: ["--config", "/config/config.yaml", "run"]
+          env:
+            - name: DIRECTORY_DB_WRITER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ tpl (.Values.global.postgresql.existingSecret) . }}"
+                  key: postgres-password
+            - name: DIRECTORY_DB_READER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ tpl (.Values.global.postgresql.existingSecret) . }}"
+                  key: "{{ .Values.global.postgresql.secretKeys.adminPasswordKey }}"
           readinessProbe:
             tcpSocket:
               port: 8383

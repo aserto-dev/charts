@@ -39,7 +39,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: "{{ tpl (.Values.global.postgresql.existingSecret) . }}"
-                  key: postgres-password
+                  key: "{{ .Values.global.postgresql.secretKeys.adminPasswordKey }}"
           command:
             - sh
             - -c
@@ -69,7 +69,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: "{{ tpl (.Values.global.postgresql.existingSecret) . }}"
-                  key: postgres-password
+                  key: "{{ .Values.global.postgresql.secretKeys.adminPasswordKey }}"
             - name: DIRECTORY_DB_READER_PASSWORD
               valueFrom:
                 secretKeyRef:

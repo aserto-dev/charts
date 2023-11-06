@@ -7,35 +7,64 @@ metadata:
 spec:
   template:
     spec:
-      initContainers:
-        - name: wait-for-directory
-          image: golang:1.19
-          command: [ "/bin/sh","-c" ]
-          args: [ 'while [ $(curl -ksw "%{http_code}" "https://{{ include "aserto-directory.fullname" . }}:8383/" -o /dev/null) -ne 404 ]; do sleep 5; echo "Waiting for the service..."; done' ]
-      containers:
-        - name: import-sample-data
-          image: golang:1.19
-          volumeMounts:
-            - mountPath: /data
-              name: data
-          command:
-            - /bin/sh
-            - -c
-            - |
-              go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
-              go install github.com/aserto-dev/topaz/cmd/topaz@latest
-
-              echo ... Creating directory tenant ...
-              grpcurl --insecure -H "authorization: basic {{ .Values.global.directory.rootKey }}" \
-                -d '{"tenant": {"id": "{{ .Values.global.topaz.tenantId }}", "name": "demo"}}' \
-                 {{ include "aserto-directory.fullname" . }}:8282 aserto.directory.store.v2.Store.CreateTenant
-
-              echo ... Importing sample data ...
-              curl https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/citadel-objects.json > /data/citadel-objects.json
-              curl https://raw.githubusercontent.com/aserto-dev/topaz/main/assets/citadel-relations.json > /data/citadel-relations.json
-              topaz import --no-check -i -H {{ include "aserto-directory.fullname" . }}:8282 -k {{ .Values.global.directory.rootKey }} --tenant-id={{ .Values.global.topaz.tenantId }} -d /data
       restartPolicy: Never
       volumes:
         - name: data
           emptyDir:
             sizeLimit: 500Mi
+      initContainers:
+        - name: wait-for-directory
+          image: golang:1.19
+          command:
+            - /bin/bash
+            - -c
+            - |              
+              PLATFORM=`uname`
+              ARCH=`uname -m`               
+              if [ "$PLATFORM" == "Linux" ]; then
+                 PLATFORM=linux
+              elif [ "$PLATFORM" == "Darwin" ]; then
+                 PLATFORM=macos
+              else
+                 echo "unknown platform"
+                 exit 1
+              fi
+              
+              if [ "$ARCH" == "aarch64" ]; then
+                ARCH=arm64
+              fi
+              
+              wget "https://github.com/fullstorydev/grpcurl/releases/download/v1.8.9/grpcurl_1.8.9_${PLATFORM}_${ARCH}.tar.gz" -O grpcurl.tar.gz
+              tar zxf grpcurl.tar.gz
+              
+              while [ $(curl -ksw "%{http_code}" "https://{{ include "aserto-directory.fullname" . }}:8383/" -o /dev/null) -ne 404 ]
+              do 
+                sleep 5
+                echo "Waiting for the service..."
+              done
+         
+              echo ... Creating directory tenant ...
+              ./grpcurl --insecure -H "authorization: basic {{ .Values.global.directory.rootKey }}" \
+                -d '{"tenant": {"id": "{{ .Values.global.topaz.tenantId }}", "name": "demo"}}' \
+                 {{ include "aserto-directory.fullname" . }}:8282 aserto.directory.store.v2.Store.CreateTenant
+   
+      containers:
+        - name: import-sample-data
+          image: ghcr.io/aserto-dev/topaz:{{ .Values.global.topaz.version }}
+          volumeMounts:
+          - mountPath: /data
+            name: data
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo ... Importing sample data ...
+              
+              wget https://raw.githubusercontent.com/aserto-dev/topaz/v3/assets/citadel/manifest.yaml -O manifest.yaml
+              wget https://raw.githubusercontent.com/aserto-dev/topaz/v3/assets/citadel-objects-v3.json -O /data/citadel-objects-v3.json
+              wget https://raw.githubusercontent.com/aserto-dev/topaz/v3/assets/citadel-relations-v3.json -O /data/citadel-relations-v3.json
+              
+              ./topaz manifest set --no-check -i -H {{ include "aserto-directory.fullname" . }}:8282 -k {{ .Values.global.directory.rootKey }} --tenant-id={{ .Values.global.topaz.tenantId }} manifest.yaml
+              
+              ./topaz import --no-check -i -H {{ include "aserto-directory.fullname" . }}:8282 -k {{ .Values.global.directory.rootKey }} --tenant-id={{ .Values.global.topaz.tenantId }} -d /data
+              

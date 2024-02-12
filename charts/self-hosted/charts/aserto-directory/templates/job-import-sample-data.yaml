@@ -17,6 +17,7 @@ spec:
           image: golang:1.19
           command:
             - /bin/bash
+            - -ex
             - -c
             - |              
               PLATFORM=`uname`
@@ -56,13 +57,14 @@ spec:
             name: data
           command:
             - /bin/sh
+            - -ex
             - -c
             - |
               echo ... Importing sample data ...
               
-              wget https://raw.githubusercontent.com/aserto-dev/topaz/v3/assets/citadel/manifest.yaml -O manifest.yaml
-              wget https://raw.githubusercontent.com/aserto-dev/topaz/v3/assets/citadel-objects-v3.json -O /data/citadel-objects-v3.json
-              wget https://raw.githubusercontent.com/aserto-dev/topaz/v3/assets/citadel-relations-v3.json -O /data/citadel-relations-v3.json
+              wget https://raw.githubusercontent.com/aserto-dev/topaz/v{{ .Values.global.topaz.version }}/assets/citadel/manifest.yaml -O manifest.yaml
+              wget https://raw.githubusercontent.com/aserto-dev/topaz/v{{ .Values.global.topaz.version }}/assets/citadel/citadel_objects.json -O /data/citadel_objects.json
+              wget https://raw.githubusercontent.com/aserto-dev/topaz/v{{ .Values.global.topaz.version }}/assets/citadel/citadel_relations.json -O /data/citadel_relations.json
               
               ./topaz manifest set --no-check -i -H {{ include "aserto-directory.fullname" . }}:8282 -k {{ .Values.global.directory.rootKey }} --tenant-id={{ .Values.global.topaz.tenantId }} manifest.yaml
               

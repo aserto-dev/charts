@@ -19,9 +19,9 @@ spec:
             - /bin/bash
             - -ex
             - -c
-            - |              
+            - |
               PLATFORM=`uname`
-              ARCH=`uname -m`               
+              ARCH=`uname -m`
               if [ "$PLATFORM" == "Linux" ]; then
                  PLATFORM=linux
               elif [ "$PLATFORM" == "Darwin" ]; then
@@ -30,14 +30,14 @@ spec:
                  echo "unknown platform"
                  exit 1
               fi
-              
+
               if [ "$ARCH" == "aarch64" ]; then
                 ARCH=arm64
               fi
-              
+
               wget "https://github.com/fullstorydev/grpcurl/releases/download/v1.8.9/grpcurl_1.8.9_${PLATFORM}_${ARCH}.tar.gz" -O grpcurl.tar.gz
               tar zxf grpcurl.tar.gz
-              
+
               while [ $(curl -ksw "%{http_code}" "https://{{ include "aserto-directory.fullname" . }}:8383/" -o /dev/null) -ne 404 ]
               do 
                 sleep 5

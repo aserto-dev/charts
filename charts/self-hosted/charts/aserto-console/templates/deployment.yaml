@@ -35,18 +35,10 @@ spec:
             - containerPort: 8080
               name: http
           env:
-            - name: AUTHORIZER_SERVICE_URL
-              value: {{ .Values.global.console.authorizerURL }}
-            - name: AUTHORIZER_API_KEY
-              value: {{ .Values.global.topaz.rootKey }}
-            - name: ASERTO_DIRECTORY_URL
-              value: {{ .Values.global.console.directoryURL }}
-            - name: DIRECTORY_API_KEY
-              value: {{ .Values.global.directory.rootKey }}
-            - name: DIRECTORY_TENANT_ID
-              value: {{ .Values.global.topaz.tenantId }}
             - name: STORAGE_PATH
               value: /config
+            - name: CLIENT_STORAGE_PATH
+              value: /storage
           volumeMounts:
             - mountPath: /config
               readOnly: false
@@ -56,6 +48,8 @@ spec:
           configMap:
             name: {{ include "aserto-console.fullname" . }}-config
             items:
-              - key: authorizerInstances
-                path: authorizerInstances
+              - key: configurations
+                path: configurations
+        - name: storage
+          emptyDir: {}
 

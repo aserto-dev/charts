@@ -39,6 +39,8 @@ spec:
               value: /config
             - name: CLIENT_STORAGE_PATH
               value: /storage
+            - name: REACT_APP_AUTH_TYPE
+              value: anonymous
           volumeMounts:
             - mountPath: /config
               readOnly: false

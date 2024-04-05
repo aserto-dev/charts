@@ -1,0 +1,132 @@
+# yaml-language-server: $schema=https://www.topaz.sh/schema/manifest.json
+---
+
+model:
+  version: 3
+
+types:
+  user:
+    relations:
+      manager: user
+
+  identity:
+    relations:
+      identifier: user
+
+  group:
+    relations:
+      member: user
+
+  machine: {}
+
+  service: {}
+
+  tenant-name:
+    relations:
+      tenant: tenant
+
+  account:
+    relations:
+      owner: user
+
+  policy-instance: {}
+
+  system:
+    relations:
+      admin: user
+      viewer: user
+
+      directory-reader:  user
+      directory-writer: user
+      directory-store-reader: user
+      directory-store-writer: user
+    permissions:
+      can_administer: admin
+      can_edit: admin
+      can_view: can_edit | viewer
+
+      write_directory: directory-writer | admin
+      read_directory: directory-reader | write_directory
+      write_directory_store: directory-store-writer | admin
+      read_directory_store : write_directory_store| directory-store-reader
+
+  tenant:
+    relations:
+      system: system
+      account: user
+      admin: group#member
+      member: group#member
+      owner: group#member
+      viewer: group#member
+
+      policy: policy-instance
+
+      decision-log-reader: group#member
+      directory-client-reader: group#member
+      directory-client-writer: group#member
+      discovery-client: group#member
+      edge-authorizer: group#member
+    permissions:
+      can_administer: owner | admin | system->can_administer
+      can_edit: member | can_administer | system->can_edit
+      can_view: viewer | can_edit | system->can_view
+
+      can_call_discovery: can_view
+      can_edit_directory: can_edit | directory-client-writer
+      can_view_directory: can_edit_directory | directory-client-reader
+
+      aserto.common.info.v1.info.info: can_view
+
+      aserto.directory.exporter.v2.exporter.export: can_view_directory
+      aserto.directory.exporter.v3.exporter.export: can_view_directory
+
+      aserto.directory.importer.v2.importer.import: can_edit_directory
+      aserto.directory.importer.v3.importer.import: can_edit_directory
+
+      aserto.directory.model.v3.model.deletemanifest: can_edit_directory
+      aserto.directory.model.v3.model.getmanifest: can_view_directory
+      aserto.directory.model.v3.model.setmanifest: can_edit_directory
+
+      aserto.directory.reader.v2.reader.checkpermission: can_view_directory
+      aserto.directory.reader.v2.reader.checkrelation: can_view_directory
+      aserto.directory.reader.v2.reader.getgraph: can_view_directory
+      aserto.directory.reader.v2.reader.getobject: can_view_directory
+      aserto.directory.reader.v2.reader.getobjectmany: can_edit_directory
+      aserto.directory.reader.v2.reader.getobjects: can_view_directory
+      aserto.directory.reader.v2.reader.getobjecttype: can_view_directory
+      aserto.directory.reader.v2.reader.getobjecttypes: can_view_directory
+      aserto.directory.reader.v2.reader.getpermission: can_view_directory
+      aserto.directory.reader.v2.reader.getpermissions: can_view_directory
+      aserto.directory.reader.v2.reader.getrelation: can_view_directory
+      aserto.directory.reader.v2.reader.getrelations: can_view_directory
+      aserto.directory.reader.v2.reader.getrelationtype: can_view_directory
+      aserto.directory.reader.v2.reader.getrelationtypes: can_view_directory
+
+      aserto.directory.reader.v3.reader.check: can_view_directory
+      aserto.directory.reader.v3.reader.checkpermission: can_view_directory
+      aserto.directory.reader.v3.reader.checkrelation: can_view_directory
+      aserto.directory.reader.v3.reader.getgraph: can_view_directory
+      aserto.directory.reader.v3.reader.getobjectmany: can_view_directory
+      aserto.directory.reader.v3.reader.getobject: can_view_directory
+      aserto.directory.reader.v3.reader.getobjects: can_view_directory
+      aserto.directory.reader.v3.reader.getrelation: can_view_directory
+      aserto.directory.reader.v3.reader.getrelations: can_view_directory
+
+      aserto.directory.writer.v2.writer.deleteobject: can_edit_directory
+      aserto.directory.writer.v2.writer.deleteobjecttype: can_edit_directory
+      aserto.directory.writer.v2.writer.deletepermission: can_edit_directory
+      aserto.directory.writer.v2.writer.deleterelation: can_edit_directory
+      aserto.directory.writer.v2.writer.deleterelationtype: can_edit_directory
+      aserto.directory.writer.v2.writer.setobject: can_edit_directory
+      aserto.directory.writer.v2.writer.setobjecttype: can_edit_directory
+      aserto.directory.writer.v2.writer.setpermission: can_edit_directory
+      aserto.directory.writer.v2.writer.setrelation: can_edit_directory
+      aserto.directory.writer.v2.writer.setrelationtype: can_edit_directory
+
+      aserto.directory.writer.v3.writer.deleteobject: can_edit_directory
+      aserto.directory.writer.v3.writer.deleterelation: can_edit_directory
+      aserto.directory.writer.v3.writer.setobject: can_edit_directory
+      aserto.directory.writer.v3.writer.setrelation: can_edit_directory
+
+      aserto.discovery.policy.v1.discovery.opadiscovery: can_call_discovery
+      aserto.discovery.policy.v2.discovery.opainstancediscovery: can_call_discovery

@@ -16,42 +16,8 @@ spec:
       labels:
         {{- include "aserto-directory.labels" . | nindent 8 }}
     spec:
-      initContainers:
-        - name: init-db
-          image: bitnami/postgresql:16.2.0-debian-11-r1
-          env:
-            - name: PGHOST
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "aserto-directory.fullname" . }}-secret
-                  key: initPGHOST
-            - name: PGDATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "aserto-directory.fullname" . }}-secret
-                  key: initPGDATABASE
-            - name: PGUSER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "aserto-directory.fullname" . }}-secret
-                  key: initPGUSER
-            - name: PGPASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: "{{ tpl (.Values.global.postgresql.existingSecret) . }}"
-                  key: "{{ .Values.global.postgresql.secretKeys.adminPasswordKey }}"
-          command:
-            - sh
-            - -c
-            - |
-              psql -h $PGHOST -U $PGUSER $PGDATABASE -tc \
-                "SELECT 1 FROM pg_user WHERE usename = 'tenant_reader'" \
-                | grep -q 1 \
-                || psql -h $PGHOST -U $PGUSER $PGDATABASE \
-                -c "CREATE ROLE tenant_reader LOGIN PASSWORD '$PGPASSWORD';";
-
-              psql -h $PGHOST -U $PGUSER $PGDATABASE \
-                -c "GRANT ALL ON SCHEMA public TO tenant_reader;";
+      imagePullSecrets:
+        - name: ghcr-creds
 
       containers:
         - name: aserto-directory
@@ -62,7 +28,7 @@ spec:
             limits:
               memory: "2048Mi"
               cpu: "2000m"
-          image: ghcr.io/aserto-dev/directory:{{ .Values.global.directory.version }}
+          image: ghcr.io/aserto-dev/self-hosted-directory:{{ .Values.global.directory.version }}
           args: ["--config", "/config/config.yaml", "run"]
           env:
             - name: DIRECTORY_DB_WRITER_PASSWORD
@@ -91,6 +57,9 @@ spec:
             - name: config
               mountPath: "/config"
               readOnly: true
+            - name: files
+              mountPath: "/files"
+              readOnly: true
       volumes:
         - name: config
           secret:
@@ -98,3 +67,6 @@ spec:
             items:
               - key: config.yaml
                 path: config.yaml
+        - name: files
+          configMap:
+            name: files

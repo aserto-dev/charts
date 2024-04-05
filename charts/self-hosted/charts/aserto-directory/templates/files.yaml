@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: files
+data:
+  manifest.yaml: |
+{{ .Files.Get "files/ds0_manifest.yaml" | indent 4 }}
+
+

@@ -3,7 +3,6 @@
 # Declare variables to be passed into your templates.
 
 global:
-
   topaz:
     version: 0.31.3
     tenantId: 07f3e43c-a734-11ed-a7a0-002270b772a6
@@ -13,8 +12,14 @@ global:
     rootKey: 997ec52a856f0911442d1fccc308a408
 
   directory:
-    version: 0.31.2
-    rootKey: c96fe48da0735cf77fdba50134f52c43
+    version: 0.1.0
+    central:
+      db: directory
+      rootKey: c96fe48da0735cf77fdba50134f52c43
+    ds0:
+      db: ds0
+      rootKey: 049aca0c880d4cc79f862d29af22c84f
+      tenantID: 4574fe3e-c602-11eb-8e9a-00ce628e6e72
 
   postgresql:
     localServerEnabled: true
@@ -25,7 +30,6 @@ global:
       postgresHost: "{{ .Release.Name }}-postgresql"
       postgresUser: postgres
       postgresPassword: directory
-      database: directory
 
   console:
     version: 0.1.7

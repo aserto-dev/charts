@@ -1,3 +1,6 @@
+> [!WARNING]
+> This repository is now archived. Please see https://github.com/aserto-dev/helm for Aserto charts.
+
 ## Aserto Charts for Kubernetes
 
 For more information, please refer to the charts section of Aserto [documentation](https://docs.aserto.com/docs/getting-started/self-hosted/helm-chart).
